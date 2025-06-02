@@ -2,9 +2,10 @@ import subprocess
 import os
 import ctypes
 import re # Added for filename sanitization
-from sms import send_sms # Import the send_sms function
+import requests # For Pushbullet notification
 
 # --- USER CONFIGURATION ---
+PUSHBULLET_API_KEY = "o.UqWB9szmZcPUIJVmHq5cmkRg7UmLBmil" # Your Pushbullet API Key
 makemkv = r"C:\\Program Files (x86)\\MakeMKV\\makemkvcon.exe"  # Path to MakeMKV CLI
 output_folder = r"C:\\Users\\doghe\\Videos\\backup"      # Updated output folder
 drive_letter = "D:"                 # DVD drive letter (used for eject)
@@ -12,6 +13,24 @@ drive_letter = "D:"                 # DVD drive letter (used for eject)
 makemkv_drive_specifier = "disc:0" 
 title_to_rip = "0"                  # Title index 0 (Main movie "Title #1")
 # --- END USER CONFIGURATION ---
+
+def send_pushbullet_notification(title: str, message: str, api_key: str):
+    """
+    Sends a notification via Pushbullet.
+    """
+    if not api_key:
+        print("Pushbullet API key not configured. Skipping notification.")
+        return
+    try:
+        data = {"type": "note", "title": title, "body": message}
+        headers = {"Access-Token": api_key, "Content-Type": "application/json"}
+        response = requests.post("https://api.pushbullet.com/v2/pushes", json=data, headers=headers, timeout=10)
+        response.raise_for_status() # Raises an HTTPError for bad responses (4XX or 5XX)
+        print(f"Pushbullet notification '{title}' sent successfully.")
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending Pushbullet notification: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred in send_pushbullet_notification: {e}")
 
 def sanitize_filename(filename):
     """
@@ -107,8 +126,7 @@ def rip_and_eject():
     print(f"Attempting to rip title {title_to_rip} from {makemkv_drive_specifier} to {final_output_path}")
 
     if not os.path.exists(makemkv):
-        print(f"Error: MakeMKV executable not found at \'{makemkv}\'. Please check the path.")
-        send_sms(f"Error: MakeMKV executable not found at \'{makemkv}\'.")
+        print(f"Error: MakeMKV executable not found at '{makemkv}'. Please check the path.")
         return
 
     # Ensure output directory (including title-specific subfolder) exists
@@ -118,7 +136,6 @@ def rip_and_eject():
             print(f"Created output directory: {final_output_path}")
     except OSError as e:
         print(f"Error creating output directory {final_output_path}: {e}")
-        send_sms(f"Error creating output directory {final_output_path}: {e}")
         return
 
     try:
@@ -164,24 +181,24 @@ def rip_and_eject():
                         ctypes.windll.WINMM.mciSendStringW(eject_command, None, 0, None)
                         ctypes.windll.WINMM.mciSendStringW(close_alias_command, None, 0, None)
                         print(f"Eject command sent to drive {drive_letter}.")
-                        send_sms(f"DVD rip successful and disc ejected from drive {drive_letter}.") # SMS notification
+                        send_pushbullet_notification("DVD Rip Success", f"DVD '{current_disc_title if current_disc_title else 'Unknown Disc'}' ripped successfully and disc ejected from drive {drive_letter}.", PUSHBULLET_API_KEY)
                     else:
                         print(f"Failed to open or alias drive {drive_letter} for eject.")
-                        send_sms(f"DVD rip successful, but failed to eject drive {drive_letter}.") # SMS notification
+                        send_pushbullet_notification("DVD Rip Alert", f"DVD '{current_disc_title if current_disc_title else 'Unknown Disc'}' ripped successfully, but failed to eject drive {drive_letter}.", PUSHBULLET_API_KEY)
                 except Exception as e_eject:
                     print(f"Could not eject drive {drive_letter}: {e_eject}")
-                    send_sms(f"DVD rip successful, but an error occurred during eject: {e_eject}") # SMS notification
+                    send_pushbullet_notification("DVD Rip Error", f"DVD '{current_disc_title if current_disc_title else 'Unknown Disc'}' ripped successfully, but an error occurred during eject: {e_eject}", PUSHBULLET_API_KEY)
             else:
                 print("\\nRip failed. Drive will not be ejected.")
-                send_sms(f"MakeMKV rip failed with error code {proc.returncode}. Drive not ejected.") # SMS notification
+                send_pushbullet_notification("DVD Rip Failed", f"MakeMKV rip failed for '{current_disc_title if current_disc_title else 'Unknown Disc'}' with error code {proc.returncode}. Drive not ejected.", PUSHBULLET_API_KEY)
 
     except FileNotFoundError: # Should be caught by the os.path.exists check
-        print(f"Error: MakeMKV executable not found at \'{makemkv}\'.")
-        send_sms(f"Error: MakeMKV executable not found at \'{makemkv}\'.") # SMS notification
+        print(f"Error: MakeMKV executable not found at '{makemkv}'.")
+        send_pushbullet_notification("Script Error", f"MakeMKV executable not found at '{makemkv}'.", PUSHBULLET_API_KEY)
         return
     except Exception as e:
         print(f"An error occurred during MakeMKV execution: {e}")
-        send_sms(f"An error occurred during MakeMKV execution: {e}") # SMS notification
+        send_pushbullet_notification("Script Error", f"An error occurred during MakeMKV execution: {e}", PUSHBULLET_API_KEY)
         return
 
 if __name__ == "__main__":
