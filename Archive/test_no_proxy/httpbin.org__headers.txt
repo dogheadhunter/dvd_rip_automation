@@ -1,0 +1,15 @@
+URL: https://httpbin.org/headers
+Title: 
+==================================================
+
+{
+  "headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", 
+    "Accept-Encoding": "gzip, deflate", 
+    "Accept-Language": "en-US,en;q=0.5", 
+    "Dnt": "1", 
+    "Host": "httpbin.org", 
+    "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/135.0.7049.53 Mobile/15E148 Safari/604.1", 
+    "X-Amzn-Trace-Id": "Root=1-683e3363-5ae156730abc7aae24752b58"
+  }
+}

@@ -1,0 +1,17 @@
+# Sample URLs for Web Scraper
+# Lines starting with # are comments and will be ignored
+# Add one URL per line
+
+# Test URLs
+https://httpbin.org/ip
+https://httpbin.org/user-agent
+https://httpbin.org/headers
+
+# Example websites (uncomment to use)
+# https://example.com
+# https://quotes.toscrape.com
+# https://books.toscrape.com
+
+# ROM websites (example - adjust as needed)
+# https://coolrom.com.au/roms/gc/
+# https://romsmania.cc/roms/gamecube

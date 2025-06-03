@@ -1,0 +1,4 @@
+# Sample URLs to scrape
+https://httpbin.org/ip
+https://httpbin.org/user-agent
+https://httpbin.org/headers
