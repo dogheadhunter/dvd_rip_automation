@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """
-🎮 ROM Downloader with Enhanced Anti-Throttling - Phase 1 Complete
-==================================================================
+🎮 ROM Downloader with Enhanced Anti-Throttling - All Phases Complete
+====================================================================
 
-This is the enhanced ROM downloader with Phase 1 improvements:
-- Better proxy rotation and logging
-- Enhanced header randomization 
-- Improved error handling and debugging
+This is the enhanced ROM downloader with all improvements:
+- Phase 1: Advanced proxy rotation and fallback
+- Phase 2: Comprehensive header randomization
+- Phase 3: Behavioral randomization
+- Content validation to prevent saving error pages
 
 Features:
 - Beautiful progress bars with download speeds and ETAs
 - Enhanced proxy rotation with detailed logging
+- Advanced header randomization for browser fingerprinting
+- Human-like behavioral patterns
+- Content-type validation to prevent saving HTML error pages
 - Better fallback handling when proxies fail
 - Resume capability for interrupted downloads
 - Sequential & concurrent download modes
@@ -215,7 +219,7 @@ class EnhancedROMDownloader:
             level=logging.INFO,
             format='%(asctime)s - %(levelname)s - %(message)s',
             handlers=[
-                logging.FileHandler('rom_downloader_enhanced.log'),
+                logging.FileHandler('rom_downloader_enhanced.log', encoding='utf-8'),
                 logging.StreamHandler()
             ]
         )
@@ -344,11 +348,11 @@ class EnhancedROMDownloader:
             
             if resume_pos > 0:
                 headers['Range'] = f'bytes={resume_pos}-'
-            
-            # Enhanced display showing actual connection info
+              # Enhanced display showing actual connection info
             proxy_display = f" via {proxy_used}" if connection_type == "proxy" else " direct"
             print(f"⬇️  Downloading: {rom['name']}{proxy_display}")
             self.logger.info(f"Starting download: {rom['name']} using {connection_type}: {proxy_used}")
+            self.logger.info(f"Download URL: {rom['url']}")
             
             # Prepare request with proper proxy handling
             request_kwargs = {
@@ -365,6 +369,26 @@ class EnhancedROMDownloader:
                 if response.status not in [200, 206]:
                     self.logger.warning(f"HTTP {response.status} for {rom['name']}")
                     return False
+                
+                # CONTENT VALIDATION: Check if we're getting HTML instead of a ROM file
+                content_type = response.headers.get('content-type', '')
+                self.logger.info(f"Content type: {content_type} for {rom['name']}")
+                
+                # Check for common HTML content types that would indicate an error page
+                if 'text/html' in content_type or 'text/plain' in content_type:
+                    # Peek at the first few bytes to confirm it's HTML
+                    first_chunk = await response.content.read(1024)
+                    first_chunk_text = first_chunk.decode('utf-8', errors='ignore').lower()
+                    
+                    # Check for HTML signatures
+                    if '<html' in first_chunk_text or '<!doctype html' in first_chunk_text:
+                        self.logger.error(f"❌ Received HTML content instead of ROM file for {rom['name']}")
+                        self.logger.debug(f"HTML preview: {first_chunk_text[:200]}...")
+                        self.download_stats['failed'] += 1
+                        return False
+                    
+                    # Put the chunk back so we don't lose it (reset position)
+                    response.content._buffer.extend([first_chunk])
                 
                 # File size calculation
                 content_length = response.headers.get('content-length')
@@ -848,16 +872,15 @@ class EnhancedROMDownloader:
         
         if use_proxies:
             print(f"🔍 Finding working proxies (enhanced with 13 GitHub sources)...")
-            try:
-                # Use existing proxy rotator or create new one
+            try:                # Use existing proxy rotator or create new one
                 if not self.proxy_rotator:
                     from working_scrapers.modern_proxy_scraper_enhanced import ModernProxyRotator
                     self.proxy_rotator = ModernProxyRotator(proxy_count=self.proxy_count, timeout=10)
                 
                 working_proxies = await self.proxy_rotator.find_proxies_async()
                 
-                if working_proxies:
-                    print(f"✅ Found {len(working_proxies)} working proxies")
+                if self.proxy_rotator.proxies and len(self.proxy_rotator.proxies) > 0:
+                    print(f"✅ Found {len(self.proxy_rotator.proxies)} working proxies")
                 else:
                     print("⚠️  No working proxies found, continuing with direct connections")
                     self.proxy_rotator = None

@@ -19,8 +19,35 @@ ROM hosting websites often implement measures to detect and block automated down
 - Header and user-agent analysis
 - Behavioral pattern detection
 - Session fingerprinting
+- Serving HTML error pages instead of ROM files
 
-The Enhanced ROM Downloader implements a comprehensive anti-throttling strategy across three phases to mimic human-like browsing behavior and avoid detection.
+The Enhanced ROM Downloader implements a comprehensive anti-throttling strategy across three phases to mimic human-like browsing behavior and avoid detection, plus content validation to ensure downloaded files are actually ROMs.
+
+## Content Validation
+
+### Features
+- **Content-Type Checking:** Validates that responses are not HTML or plain text
+- **HTML Detection:** Analyzes the first bytes of a response to detect HTML content
+- **Error Logging:** Provides detailed logs when error pages are detected
+- **File Integrity:** Prevents saving HTML error pages as ROM files
+
+### Implementation
+```python
+# CONTENT VALIDATION: Check if we're getting HTML instead of a ROM file
+content_type = response.headers.get('content-type', '')
+self.logger.info(f"Content type: {content_type} for {rom['name']}")
+
+# Check for common HTML content types that would indicate an error page
+if 'text/html' in content_type or 'text/plain' in content_type:
+    # Peek at the first few bytes to confirm it's HTML
+    first_chunk = await response.content.read(1024)
+    first_chunk_text = first_chunk.decode('utf-8', errors='ignore').lower()
+    
+    # Check for HTML signatures
+    if '<html' in first_chunk_text or '<!doctype html' in first_chunk_text:
+        self.logger.error(f"❌ Received HTML content instead of ROM file for {rom['name']}")
+        return False
+```
 
 ## Phase 1: Proxy Rotation
 
