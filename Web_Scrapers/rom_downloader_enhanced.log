@@ -13,3 +13,6 @@
 2025-06-03 09:00:21,992 - ERROR - Error downloading Burnout (USA).zip: 'ModernProxyRotator' object has no attribute 'get_enhanced_random_headers'
 2025-06-03 09:00:24,785 - ERROR - Error downloading Burnout 2 - Point of Impact (USA).zip: 'ModernProxyRotator' object has no attribute 'get_enhanced_random_headers'
 2025-06-03 09:00:27,322 - ERROR - Error downloading ps-10j.zip: 'ModernProxyRotator' object has no attribute 'get_enhanced_random_headers'
+2025-06-03 09:44:52,576 - INFO - Enhanced ROM Downloader initialized
+2025-06-03 09:44:52,576 - INFO - Enhanced ROM Downloader initialized
+2025-06-03 09:44:52,577 - INFO - Enhanced ROM Downloader initialized
