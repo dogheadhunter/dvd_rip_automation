@@ -133,8 +133,7 @@ class ROMDownloader:
         return roms
     
     def sanitize_filename(self, filename: str) -> str:
-        """Clean filename for safe storage"""
-        # Remove/replace invalid characters
+        """Clean filename for safe storage"""        # Remove/replace invalid characters
         invalid_chars = '<>:"/\\|?*'
         for char in invalid_chars:
             filename = filename.replace(char, '_')
@@ -217,17 +216,20 @@ class ROMDownloader:
                     async for chunk in response.content.iter_chunked(chunk_size):
                         await f.write(chunk)
                         downloaded += len(chunk)
-                          # Update progress bars
+                        
+                        # Update progress bars
                         chunk_len = len(chunk)
                         file_pbar.update(chunk_len)
-                        # Note: overall_pbar will be updated per ROM completion, not per chunk
+                        if overall_pbar:
+                            overall_pbar.update(chunk_len)
                         
                         # Update speed calculation every second
                         current_time = time.time()
                         if current_time - last_update_time >= 1.0:
                             speed = (downloaded - last_downloaded) / (current_time - last_update_time)
                             file_pbar.set_postfix({
-                                'speed': f"{speed/(1024*1024):.1f}MB/s",                            'eta': f"{((total_size - downloaded) / speed):.0f}s" if total_size and speed > 0 else "?"
+                                'speed': f"{speed/(1024*1024):.1f}MB/s",
+                                'eta': f"{((total_size - downloaded) / speed):.0f}s" if total_size and speed > 0 else "?"
                             })
                             last_update_time = current_time
                             last_downloaded = downloaded
@@ -235,24 +237,22 @@ class ROMDownloader:
                 file_pbar.close()
                 self.download_stats['completed'] += 1
                 self.download_stats['total_size'] += downloaded
-                
-                # Update overall progress bar for ROM completion
-                if overall_pbar:
-                    overall_pbar.update(1)
-                
                 print(f"✅ Completed: {rom['name']}")
                 return True
                 
         except asyncio.TimeoutError:
             self.logger.error(f"Timeout downloading {rom['name']}")
             return False
-        except Exception as e:
-            self.logger.error(f"Error downloading {rom['name']}: {e}")
+        except Exception as e:            self.logger.error(f"Error downloading {rom['name']}: {e}")
             return False
     
     async def download_roms_sequential(self, roms: List[Dict], output_dir: Path):
         """Download ROMs one at a time with polite delays to avoid throttling"""
         print(f"🐌 Using sequential downloads with {self.delay_range[0]}-{self.delay_range[1]}s delays")
+        
+        # Calculate total size estimate for overall progress bar
+        total_estimated_size = 0
+        print("📊 Estimating total download size...")
         
         # Create SSL context that allows self-signed certificates  
         ssl_context = ssl.create_default_context()
@@ -312,8 +312,7 @@ class ROMDownloader:
         else:
             # Legacy concurrent mode (may trigger throttling)
             await self.download_roms_concurrent(roms, output_dir)
-    
-    async def download_roms_concurrent(self, roms: List[Dict], output_dir: Path):
+      async def download_roms_concurrent(self, roms: List[Dict], output_dir: Path):
         """Download ROMs in batches with concurrency control (legacy mode)"""
         concurrent_downloads = 2  # Reduced from 3 to be more polite
         semaphore = asyncio.Semaphore(concurrent_downloads)
@@ -377,8 +376,7 @@ class ROMDownloader:
         print(f"❌ Failed: {self.download_stats['failed']}")
         print(f"📦 Total Downloaded: {self.download_stats['total_size']/(1024*1024*1024):.2f} GB")
         print("="*50)
-    
-    async def run_interactive(self):
+      async def run_interactive(self):
         """Interactive ROM downloader interface"""
         print("🎮 ROM DOWNLOADER - Enhanced with Progress Bars & SSL Support")
         print("="*65)
@@ -463,9 +461,7 @@ class ROMDownloader:
         # Set up output directory
         output_dir = Path("ROM_Downloads_Test")
         output_dir.mkdir(exist_ok=True)
-        print(f"📁 Downloads will be saved to: {output_dir.absolute()}")
-        
-        # Ask about download mode
+        print(f"📁 Downloads will be saved to: {output_dir.absolute()}")        # Ask about download mode
         print("\n⚡ Download Mode Options:")
         print("1. Sequential (Recommended) - One ROM at a time with polite delays")
         print("2. Concurrent (Legacy) - Multiple downloads at once (may trigger throttling)")
@@ -513,14 +509,12 @@ class ROMDownloader:
             else:
                 print("⚠️  No working proxies found, continuing with direct connections")
                 self.proxy_rotator = None
-        
-        # Start downloads
+          # Start downloads
         if self.sequential_mode:
             print(f"\n🚀 Starting sequential downloads with {self.delay_range[0]}-{self.delay_range[1]}s delays...")
         else:
             print(f"\n🚀 Starting concurrent downloads (legacy mode)...")
         print("📡 SSL Certificate verification disabled for ROM hosting sites")
-        print("📊 You'll see beautiful progress bars with speeds and ETAs!")
         
         start_time = time.time()
         await self.download_roms_batch(all_roms, output_dir)
