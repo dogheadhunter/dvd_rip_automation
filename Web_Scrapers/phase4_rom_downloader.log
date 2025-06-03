@@ -1,0 +1,14 @@
+2025-06-03 11:12:08,038 - INFO - 📋 Loaded 13 ROMs from ..\rom_website_scraper\scraped_data\GameCube\Zelda_Roms.txt
+2025-06-03 11:12:08,060 - INFO - 🌐 Created new cloudscraper session (browser: firefox)
+2025-06-03 11:12:08,061 - INFO - 🚀 Phase 4 Anti-Throttling ROM Downloader initialized
+2025-06-03 11:12:08,062 - INFO - 🎮 Starting download of 13 ROMs with Phase 4 anti-throttling
+2025-06-03 11:12:08,062 - INFO - 🔀 Shuffled ROM order for unpredictable download pattern
+2025-06-03 11:12:08,071 - INFO - 🚀 Starting download: Legend of Zelda, The - Ocarina of Time & Master Quest (USA).zip
+2025-06-03 11:12:08,071 - INFO - 🔗 URL: https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/Legend%20of%20Zelda%2C%20The%20-%20Ocarina%20of%20Time%20%26%20Master%20Quest%20%28USA%29.zip
+2025-06-03 11:17:34,647 - INFO - 📋 Loaded 13 ROMs from ..\rom_website_scraper\scraped_data\GameCube\Zelda_Roms.txt
+2025-06-03 11:17:34,664 - INFO - 🌐 Created new cloudscraper session (browser: firefox)
+2025-06-03 11:17:34,665 - INFO - 🚀 Phase 4 Anti-Throttling ROM Downloader initialized
+2025-06-03 11:17:34,665 - INFO - 🎮 Starting download of 13 ROMs with Phase 4 anti-throttling
+2025-06-03 11:17:34,665 - INFO - 🔀 Shuffled ROM order for unpredictable download pattern
+2025-06-03 11:17:34,676 - INFO - 🚀 Starting download: Legend of Zelda, The - The Wind Waker (USA).zip
+2025-06-03 11:17:34,676 - INFO - 🔗 URL: https://myrient.erista.me/files/Redump/Nintendo%20-%20GameCube%20-%20NKit%20RVZ%20%5Bzstd-19-128k%5D/Legend%20of%20Zelda%2C%20The%20-%20The%20Wind%20Waker%20%28USA%29.zip

@@ -1,4 +1,6 @@
 # Web Scraper with Proxy Rotation - Requirements
+# Phase 4 Anti-Throttling Dependencies
+cloudscraper>=1.2.60
 beautifulsoup4>=4.12.0
 requests>=2.31.0
 proxybroker>=0.3.2

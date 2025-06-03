@@ -143,7 +143,7 @@ def rip_and_eject():
         command = [
             makemkv,
             "-r",
-            "--minlength=300", 
+            "--minlength=1000", 
             "mkv",
             makemkv_drive_specifier,
             title_to_rip,
