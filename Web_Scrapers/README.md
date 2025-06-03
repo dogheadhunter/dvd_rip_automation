@@ -1,17 +1,34 @@
 # 🎮 ROM Downloader & Web Scrapers
 
-A comprehensive collection of tools for downloading ROM files with beautiful progress bars, proxy support, and advanced scraping capabilities.
+A comprehensive collection of tools for downloading ROM files with beautiful progress bars, proxy support, and advanced anti-throttling capabilities.
 
 ## 🚀 Quick Start
 
-### Main ROM Downloader
+### Enhanced ROM Downloader (Recommended)
+```bash
+python rom_downloader_enhanced.py
+```
+
+**Features:**
+- ✨ Beautiful progress bars with download speeds and ETAs
+- 🌐 Advanced proxy rotation with 13 sources
+- 🎭 Dynamic header randomization for browser-like requests
+- 🎲 Behavioral randomization for human-like download patterns
+- 🔄 Session rotation to avoid detection
+- 🔒 SSL certificate handling for self-signed certificates  
+- 📁 Organizes downloads by console
+- ⏸️ Resume capability for interrupted downloads
+- 🐌 Multiple behavioral patterns (quick, normal, careful, distracted)
+- 📊 Enhanced statistics and logging
+
+### Legacy ROM Downloader
 ```bash
 python rom_downloader.py
 ```
 
 **Features:**
 - ✨ Beautiful progress bars with download speeds and ETAs
-- 🌐 Proxy rotation to avoid being blocked
+- 🌐 Basic proxy rotation to avoid being blocked
 - 🔒 SSL certificate handling for self-signed certificates  
 - 📁 Organizes downloads by console
 - ⏸️ Resume capability for interrupted downloads
@@ -67,14 +84,30 @@ The ROM downloader tracks:
 - ⏱️ Download speeds and ETAs
 - 🕐 Session duration
 
-## 🌐 Proxy Support
+## 🌐 Anti-Throttling Technology
 
-The downloader includes advanced proxy capabilities:
-- 🔄 Automatic proxy rotation
-- 🌍 Multiple proxy sources (13 GitHub sources)
-- ✅ Proxy validation and testing
-- 🔀 Random user-agent rotation
-- 🛡️ Anti-detection measures
+The enhanced downloader includes advanced anti-throttling capabilities:
+
+### Phase 1: Proxy Rotation ✅
+- 🔄 Improved proxy rotation with 13 GitHub sources
+- 🔍 Advanced proxy validation and testing
+- ⚡ Proper fallback mechanism when proxies fail
+- 📊 Detailed proxy usage tracking and statistics
+
+### Phase 2: Header Randomization ✅
+- 🎭 Dynamic user-agent rotation across multiple browsers
+- 🧩 Browser-specific header sets (Chrome, Firefox, Safari, Edge)
+- 🔀 Randomized accept-language and accept-encoding headers
+- 🛡️ Anti-fingerprinting techniques
+
+### Phase 3: Behavioral Randomization ✅
+- ⏱️ Variable timing patterns (human-like pauses)
+- 🎲 Download order shuffling to avoid predictable patterns
+- 🔄 Session rotation for enhanced stealth
+- 📈 Adaptive behavior based on site responses
+- 🤖 Multiple behavioral profiles (quick, normal, careful, distracted)
+
+See `documentation/ANTI_THROTTLING_GUIDE.md` for detailed information.
 
 ## 🎯 ROM Collections Supported
 

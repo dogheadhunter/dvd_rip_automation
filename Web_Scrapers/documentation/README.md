@@ -1,29 +1,39 @@
-# 🎮 ROM Downloader & Web Scrapers
+# 📚 ROM Downloader Documentation
 
-A comprehensive collection of tools for downloading ROM files with beautiful progress bars, proxy support, and advanced scraping capabilities.
+This folder contains comprehensive documentation for the ROM Downloader and Web Scrapers project.
 
-## 🚀 Quick Start
+## 📝 Documentation Files
 
-### Main ROM Downloader
-```bash
-python rom_downloader.py
-```
+### User Guides
+- **[ANTI_THROTTLING_GUIDE.md](ANTI_THROTTLING_GUIDE.md)** - Detailed guide on anti-throttling technology (Phases 1-3)
+- **[SCRAPER_README.md](SCRAPER_README.md)** - Guide for using the web scraper components
 
-**Features:**
-- ✨ Beautiful progress bars with download speeds and ETAs
-- 🌐 Proxy rotation to avoid being blocked
-- 🔒 SSL certificate handling for self-signed certificates  
-- 📁 Organizes downloads by console
-- ⏸️ Resume capability for interrupted downloads
-- 🐌 Sequential & concurrent download modes
-- 📊 Real-time statistics and logging
+### Project Documentation
+- **[ROM_THROTTLING_FIX_TODO.md](ROM_THROTTLING_FIX_TODO.md)** - Implementation plan for anti-throttling features
+- **[PHASE_VERIFICATION_RESULTS.md](PHASE_VERIFICATION_RESULTS.md)** - Test results for each implementation phase
 
-### Scraper Launcher
-```bash
-python scraper_launcher.py
-```
+### API Documentation
+- Coming soon: ROM Downloader API documentation
 
-Launch various web scraping tools with an interactive menu.
+## 🚀 Feature Implementations
+
+### Completed Features
+- ✅ **Phase 1: Proxy Rotation** - Enhanced proxy handling and validation
+- ✅ **Phase 2: Header Randomization** - Browser-specific header sets and user-agent rotation
+- ✅ **Phase 3: Behavioral Randomization** - Human-like timing patterns and session handling
+
+### Upcoming Features
+- 🔄 **Phase 4: Advanced Anti-Detection** - TLS fingerprinting, realistic browser behaviors
+- 🔄 **Phase 5: Testing & Optimization** - Comprehensive test suite and monitoring
+
+## 📊 Implementation Status
+Current Status: **Phase 3 Complete (June 3, 2025)**
+
+Refer to [PHASE_VERIFICATION_RESULTS.md](PHASE_VERIFICATION_RESULTS.md) for detailed verification results of each implementation phase.
+
+## 🔧 Configuration Guide
+
+For detailed configuration options, see [ANTI_THROTTLING_GUIDE.md](ANTI_THROTTLING_GUIDE.md).
 
 ## 📁 Directory Structure
 
