@@ -9,3 +9,7 @@
 2025-06-02 21:05:50,679 - ERROR - Error downloading ps-10j.zip: [WinError 64] The specified network name is no longer available
 2025-06-02 21:05:51,408 - INFO - Enhanced ROM Downloader initialized
 2025-06-02 21:06:20,977 - INFO - Enhanced ROM Downloader initialized
+2025-06-03 08:58:51,592 - INFO - Enhanced ROM Downloader initialized
+2025-06-03 09:00:21,992 - ERROR - Error downloading Burnout (USA).zip: 'ModernProxyRotator' object has no attribute 'get_enhanced_random_headers'
+2025-06-03 09:00:24,785 - ERROR - Error downloading Burnout 2 - Point of Impact (USA).zip: 'ModernProxyRotator' object has no attribute 'get_enhanced_random_headers'
+2025-06-03 09:00:27,322 - ERROR - Error downloading ps-10j.zip: 'ModernProxyRotator' object has no attribute 'get_enhanced_random_headers'

@@ -29,16 +29,25 @@ from typing import List, Dict, Optional
 from urllib.parse import urlparse, unquote
 import random
 from tqdm.asyncio import tqdm
+# Phase 3: Behavioral Randomization imports
+from datetime import datetime, timedelta
+import hashlib
+import json
 
 # Add the working_scrapers directory to path to import our proxy tools
 sys.path.append(str(Path(__file__).parent / "working_scrapers"))
 
 try:
-    from modern_proxy_scraper import ModernProxyRotator
+    from modern_proxy_scraper_enhanced import EnhancedModernProxyRotator
+    print("✅ Using enhanced proxy scraper with Phase 2 headers")
 except ImportError:
-    print("❌ Error: Could not import modern proxy scraper")
-    print("Make sure you're running this from the Web_Scrapers directory")
-    sys.exit(1)
+    try:
+        from modern_proxy_scraper import ModernProxyRotator
+        print("⚠️  Using basic proxy scraper - Phase 2 features not available")
+    except ImportError:
+        print("❌ Error: Could not import any proxy scraper")
+        print("Make sure you're running this from the Web_Scrapers directory")
+        sys.exit(1)
 
 class EnhancedROMDownloader:
     """Enhanced ROM downloader with anti-throttling improvements"""
